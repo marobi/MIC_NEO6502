@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{b44597bb-4ab8-41cb-af88-5275f4f1923b}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)library.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- <ClInclude Include="$(MSBuildThisFileDirectory)MIC_NEO6502.h" /> -->
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\memory.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\mos65C02.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\NEO6502.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\palette.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\pins.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\roms.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\sound.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\sprite.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\tile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\vdu.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\memory.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\mos65C02.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\NEO6502.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\roms.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\sound.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\sprite.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\tile.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\vdu.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)LICENSE" />
+  </ItemGroup>
+</Project>
