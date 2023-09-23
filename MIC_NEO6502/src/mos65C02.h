@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "Arduino.h"
 
-#define USE_DIRECT
+#define USE_DIRECT_READ
 
 void init6502();
 void reset6502();

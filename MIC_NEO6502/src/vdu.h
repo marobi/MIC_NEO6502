@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define WIDTH          320
 #define HEIGHT         240
 #define FONT_CHAR_WIDTH  6  
-#define FONT_CHAR_HEIGHT 8 
+#define FONT_CHAR_HEIGHT 7 
 #define LINES       HEIGHT / (FONT_CHAR_HEIGHT + 1)
 #define LINECHARS   WIDTH / FONT_CHAR_WIDTH
 
@@ -77,10 +77,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
 extern uint8_t currentColor;
+extern uint8_t currentTextColor;
 extern boolean autoUpdate;
 extern uint32_t hasDisplayUpdate;
 extern boolean  traceOn;
 
+extern void setColor(const uint8_t);
 extern void drawBitmap(const uint16_t, const uint16_t, const uint8_t*, const uint8_t);
 extern uint8_t getPixel(const uint16_t, const uint16_t);
 extern void drawPixel(const uint16_t, const uint16_t, const uint16_t);

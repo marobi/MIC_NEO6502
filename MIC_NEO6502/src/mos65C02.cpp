@@ -17,6 +17,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // 
 // Author: Rien Matthijsse
 // 
+#include "NEO6502.h"
 #include "mos65C02.h"
 #include "pins.h"
 #include "memory.h"
@@ -36,8 +37,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define DELAY_FACTOR_SHORT() asm volatile("nop\nnop\nnop\nnop\n");
 #define DELAY_FACTOR_LONG()  asm volatile("nop\nnop\nnop\nnop\n");
 
-// # of clock cycles to keep rest pin low
-#define RESET_COUNT  4
+// # of clock cycles to keep reset pin low
+#define RESET_COUNT  8
 
 // mask used for the mux address/data bus: GP0-7
 constexpr uint32_t BUS_MASK = 0xFF;
@@ -221,7 +222,7 @@ void  tick6502()
   // do RW action
   switch (getRW()) {
   case RW_READ:
-#ifdef USE_DIRECT
+#ifdef USE_DIRECT_READ
     data = mem[address];
 #else
     readmemory(); // data = @address
@@ -232,11 +233,11 @@ void  tick6502()
 
   case RW_WRITE:
     data = getData();
-#ifdef USE_DIRECT
-    mem[address] = data;
-#else
-    writememory(); // @address = data
-#endif
+    if (! romProtect)
+      mem[address] = data;
+    else
+      writememory(); // @address = data
+
     //      Serial.printf("W %04X %02X\n", address, data);
     break;
   }

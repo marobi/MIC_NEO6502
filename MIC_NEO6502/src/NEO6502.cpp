@@ -35,6 +35,7 @@ unsigned long  frameClockTS;
 
 boolean        logState = false;
 
+boolean        romProtect;
 
 /// <summary>
 /// 
@@ -77,6 +78,25 @@ bool NEO6502::addROM(const char* romName, const uint8_t* ROM)
 /// <param name="vUcase"></param>
 void NEO6502::setUCASE(const boolean vUcase) {
   isUcase = vUcase;
+}
+
+/// <summary>
+/// set ROM protect
+/// </summary>
+/// <param name="vProtect"></param>
+void NEO6502::setROMProtect(const boolean vProtect)
+{
+  romProtect = vProtect;
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="vColor"></param>
+void NEO6502::setTextColor(uint8_t vColor)
+{
+  currentTextColor = vColor;
+  setColor(vColor);
 }
 
 ////////////////////////////////////////////////////////////////////

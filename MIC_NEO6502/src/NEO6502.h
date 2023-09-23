@@ -22,6 +22,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 //#define UCASE_ONLY
 
+extern boolean romProtect;
+
 /// <summary>
 /// 
 /// </summary>
@@ -37,6 +39,8 @@ class NEO6502
 	 bool addROM(const char* romName, const uint8_t* ROM);
 	 void run();
 	 void setUCASE(const boolean vUcase);
+	 void setROMProtect(const boolean vProtect);
+	 void setTextColor(uint8_t vColor);
 };
 
 #endif

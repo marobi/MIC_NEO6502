@@ -30,6 +30,7 @@ uint8_t        currentColor;
 uint8_t        currentColorIndex = 0;
 boolean        autoUpdate = true;
 boolean        autoScroll = true;
+uint8_t        currentTextColor = DEFAULT_TEXT_COLOR;
 uint32_t       hasDisplayUpdate = 0;
 
 boolean        traceOn = false;
@@ -100,7 +101,7 @@ void showCursor(const boolean vSet) {
 /// set current text color (by pallette index)
 /// </summary>
 /// <param name="vColor"></param>
-inline __attribute__((always_inline))
+//inline __attribute__((always_inline))
 void setColor(const uint8_t vColor) {
   currentColor = vColor;
   display.setTextColor(vColor);
@@ -332,10 +333,9 @@ void displayWrite(const uint8_t c) {
     if (cursor_y >= (HEIGHT - 9)) { // Vert scroll?
       if (autoScroll) {
         memmove(display.getBuffer(), display.getBuffer() + WIDTH * (FONT_CHAR_HEIGHT + 1), WIDTH * (HEIGHT - (FONT_CHAR_HEIGHT + 1)));
-        display.drawFastHLine(0, HEIGHT - 9, WIDTH, 0); // Clear bottom line
-        display.fillRect(0, HEIGHT - 9, WIDTH, FONT_CHAR_HEIGHT + 1, 0);
-
-        cursor_y = HEIGHT - 9;
+        display.fillRect(0, HEIGHT - (FONT_CHAR_HEIGHT + 1), WIDTH, FONT_CHAR_HEIGHT + 1, 0);
+        //        display.drawFastHLine(0, HEIGHT - 9, WIDTH, 0); // Clear bottom line
+        cursor_y = HEIGHT - (FONT_CHAR_HEIGHT + 1);
       }
     }
     else {
@@ -451,7 +451,7 @@ void resetDisplay() {
   statusCursor = true;
   autoUpdate = true;
   autoScroll = true;
-  setColor(DEFAULT_TEXT_COLOR);
+  setColor(currentTextColor);
 
   initSprites();
   initTiles(); // no tiles defined
@@ -476,28 +476,28 @@ void initDisplay() {
 void helloDisplay() {
   // and we have lift off
   setColor(12); // BLUE
-#if 1
-  display.println("      N   N           666  5555   000   222");
-  display.println("      N   N          6     5     0   0 2   2");
-  display.println("      NN  N          6     5     0   0     2");
-  display.println("      N N N EEE  OO  6666  5555  0   0    2");
-  display.println("      N  NN E   O  O 6   6     5 0   0   2");
-  display.println("      N   N EE  O  O 6   6     5 0   0  2");
-  display.println("      N   N E   O  O 6   6 5   5 0   0 2");
-  display.println("      N   N EEE  OO   666   555   000  22222");
-#endif
 #if 0
-  display.println("nn    nn  eeeee   ooo     666   55555    00    222");
-  display.println("nn n  nn eeeeee  ooooo   66 66  55      0000  22222");
-  display.println("nn nn nn        ooo ooo 66      5555   00  00    222");
-  display.println("nn nn nn eeeeee oo   oo 6 666   55555  00  00    22");
-  display.println("nn nn nn eeeeee oo   oo 66   66     55 00  00   22");
-  display.println("nn nn nn        ooo ooo 66   66     55 00  00  22");
-  display.println("nn  n nn eeeeee  ooooo   66666  55555   0000  222222");
-  display.println("nn    nn  eeeee   ooo     666    555     00  2222222");
+  display.println("      N   N            666  5555   000   222");
+  display.println("      N   N           6     5     0   0 2   2");
+  display.println("      NN  N           6     5     0   0     2");
+  display.println("      N N N EEEE  OO  6666  5555  0   0    2");
+  display.println("      N  NN E    O  O 6   6     5 0   0   2");
+  display.println("      N   N EEE  O  O 6   6     5 0   0  2");
+  display.println("      N   N E    O  O 6   6 5   5 0   0 2");
+  display.println("      N   N EEEE  OO   666   555   000  22222");
+#endif
+#if 1
+  display.println("          N  N          66  555   00   22");
+  display.println("          N  N         6    5    0  0 2  2");
+  display.println("          NN N         6    5    0  0    2");
+  display.println("          N NN EEE  O  666  555  0  0   2");
+  display.println("          N NN E   O O 6  6    5 0  0  2");
+  display.println("          N  N EE  O O 6  6    5 0  0 2");
+  display.println("          N  N E   O O 6  6 5  5 0  0 2");
+  display.println("          N  N EEE  O   66   55   00  2222");
 #endif
 //  display.print("NEO6502");
   setColor(255); // WHITE
-  display.println("\n            memulator v0.09.01\n");
-  setColor(DEFAULT_TEXT_COLOR); // GREEN
+  display.println("\n                memulator v0.09.17\n");
+  setColor(currentTextColor);
 }

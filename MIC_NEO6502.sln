@@ -5,15 +5,53 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MIC_NEO6502", "MIC_NEO6502\MIC_NEO6502.vcxitems", "{B44597BB-4AB8-41CB-AF88-5275F4F1923B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ROMs", "ROMs", "{CAB4F5CB-47A6-43D6-9AC9-ED0E937F5004}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{813440E8-04D1-4743-822E-035642A87664}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NEO6502_v1", "..\NEO6502_v1\NEO6502_v1\NEO6502_v1.vcxproj", "{4B8CE904-66EF-4820-834C-AFCA9B448261}"
 EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|ARM.ActiveCfg = Debug|ARM
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|ARM.Build.0 = Debug|ARM
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|ARM.Deploy.0 = Debug|ARM
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|ARM64.Build.0 = Debug|ARM64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|x64.ActiveCfg = Debug|x64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|x64.Build.0 = Debug|x64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|x64.Deploy.0 = Debug|x64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|x86.ActiveCfg = Debug|x86
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|x86.Build.0 = Debug|x86
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Debug|x86.Deploy.0 = Debug|x86
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|ARM.ActiveCfg = Release|ARM
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|ARM.Build.0 = Release|ARM
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|ARM.Deploy.0 = Release|ARM
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|ARM64.ActiveCfg = Release|ARM64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|ARM64.Build.0 = Release|ARM64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|ARM64.Deploy.0 = Release|ARM64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|x64.ActiveCfg = Release|x64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|x64.Build.0 = Release|x64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|x64.Deploy.0 = Release|x64
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|x86.ActiveCfg = Release|x86
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|x86.Build.0 = Release|x86
+		{4B8CE904-66EF-4820-834C-AFCA9B448261}.Release|x86.Deploy.0 = Release|x86
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {77E49571-566B-4DAB-8222-E3ACBC612F26}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		MIC_NEO6502\MIC_NEO6502.vcxitems*{4b8ce904-66ef-4820-834c-afca9b448261}*SharedItemsImports = 4
+		MIC_NEO6502\MIC_NEO6502.vcxitems*{b44597bb-4ab8-41cb-af88-5275f4f1923b}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal
