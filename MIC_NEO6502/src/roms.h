@@ -22,7 +22,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "Arduino.h"
 
-boolean loadROM(const char* romName, const uint8_t* ROM);
+#define MAX_ROM_SLOTS  8
+
+bool initROMCassette();
+bool installROMCartridge(const uint8_t id, const char *ROMName, const uint8_t* ROMCartridge);
+bool loadROMCartridge(const uint8_t vId);
 
 #endif
 

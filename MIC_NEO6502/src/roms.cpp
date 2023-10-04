@@ -18,7 +18,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "memory.h"
 
 /// <summary>
-/// ROM package header definition
+/// 
+/// </summary>
+typedef struct {
+  char  CartridgeName[32];
+  const uint8_t* ROMCartridge;
+  boolean Loaded;
+} defROMCartidge;
+
+/// <summary>
+/// ROM cartridge header definition
 /// </summary>
 typedef struct {            // 16 bytes
   uint8_t	SOH;              // fixed 0x5A
@@ -39,28 +48,32 @@ typedef struct {            // 16 bytes
   uint8_t EOH;              // fixed 0xA5
 } defROM;
 
+/// <summary>
+/// cassette with 8 cartridges
+/// </summary>
+defROMCartidge  gROMCassette[MAX_ROM_SLOTS];
+
 
 /// <summary>
-/// load a ROM image into memory
+/// load cartridge into memory
 /// </summary>
-/// <param name="romName"></param>
-/// <param name="romImage"></param>
+/// <param name="vId"></param>
 /// <returns></returns>
-boolean loadROM(const char* romName, const uint8_t* romImage) {
+bool loadROMCartridge(const uint8_t vId) {
   uint16_t startAddress;
   uint16_t romSize;
-  uint8_t romType;
+  uint8_t  romType;
 
-  if (romImage) {
-    defROM* hdr = (defROM *)romImage;
+  if (vId < MAX_ROM_SLOTS) {
+    defROM* hdr = (defROM*)gROMCassette[vId].ROMCartridge;
 
     if ((hdr->SOH != 0x5A) || (hdr->EOH != 0xA5)) {
-      Serial.println("*ERROR: Invalid ROM header");
+      Serial.println(F("*ERROR: Invalid ROM header"));
       return false;
     }
 
     if (hdr->VERSION_MAJOR != 0x01) {
-      Serial.println("*ERROR: Invalid ROM version");
+      Serial.println(F("*ERROR: Invalid ROM version"));
       return false;
     }
 
@@ -78,7 +91,7 @@ boolean loadROM(const char* romName, const uint8_t* romImage) {
     csum += hdr->IRQ_H;
 
     if (csum != hdr->CSUM) {
-      Serial.println("*ERROR: Invalid checksum");
+      Serial.println(F("*ERROR: Invalid checksum"));
       return false;
     }
 
@@ -104,15 +117,46 @@ boolean loadROM(const char* romName, const uint8_t* romImage) {
 
     startAddress = (uint16_t)hdr->STARTADDRESS_H * 256 + hdr->STARTADDRESS_L;
     romSize = (uint16_t)hdr->SIZE_H * 256 + hdr->SIZE_L;
-    Serial.printf("%16s\t%04X: [%04X]\n", romName, startAddress, romSize);
+    Serial.printf("%16s\t%04X: [%04X]\n", gROMCassette[vId].CartridgeName, startAddress, romSize);
     
     // copy ROM in memory space
-    memcpy(&mem[startAddress], romImage + sizeof(defROM), romSize);
+    memcpy(&mem[startAddress], gROMCassette[vId].ROMCartridge + sizeof(defROM), romSize);
 
     return true;
   }
   else {
-    Serial.println("*ERROR: Invalid ROM");
+    Serial.println(F("*ERROR: Invalid ROM"));
     return false;
   }
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <returns></returns>
+boolean initROMCassette()
+{
+  for (uint8_t i = 0; i < MAX_ROM_SLOTS; i++)
+    gROMCassette[i].Loaded = false;
+
+  return true;
+}
+
+/// <summary>
+/// install a ROMCartridge at given position in cassette
+/// </summary>
+/// <param name="id"></param>
+/// <param name="ROMCartridge"></param>
+/// <returns></returns>
+boolean installROMCartridge(const uint8_t vId, const char* vROMName, const uint8_t* vROMCartridge)
+{
+  if (vId < MAX_ROM_SLOTS) {
+    strcpy(gROMCassette[vId].CartridgeName, vROMName);
+    gROMCassette[vId].ROMCartridge = vROMCartridge;
+
+    Serial.printf("ROM-%02d: %s installed\n", vId, vROMName);
+    return true;
+  }
+  else
+    return false;
 }

@@ -18,7 +18,11 @@
   </ItemGroup>
   <ItemGroup>
     <!-- <ClInclude Include="$(MSBuildThisFileDirectory)MIC_NEO6502.h" /> -->
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\basic.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\bios.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\demo.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\memory.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\mon.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\mos65C02.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\NEO6502.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\palette.h" />

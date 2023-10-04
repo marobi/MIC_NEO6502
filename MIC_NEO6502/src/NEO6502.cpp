@@ -28,14 +28,34 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "NEO6502.h"
 
-//
+#include "bios.h"
+#include "mon.h"
+#include "basic.h"
+#include "demo.h"
+
+#define MAX_ROM_CARTRIDGES  8
+
+/// <summary>
+/// 
+/// </summary>
+typedef struct {
+  char ConfigName[32];
+  int8_t Config[MAX_ROM_CARTRIDGES];
+} defMemConfig;
+
+//---------------------------------------------------------
 uint32_t       clockCount = 0UL;
 unsigned long  lastClockTS;
 unsigned long  frameClockTS;
-
 boolean        logState = false;
-
 boolean        romProtect;
+
+//---------------------------------------------------------
+defMemConfig gMemConfig[] = {
+  { "Basic setup", {0, 1, 2, -1 } },
+  { "Demo setup",  {0, 1, 3, -1 }, },
+  { "", {-1 } }
+};
 
 /// <summary>
 /// 
@@ -43,6 +63,12 @@ boolean        romProtect;
 void NEO6502::init()
 {
   initMemory();
+
+  initROMCassette();
+  installROMCartridge(0, "BIOS", bios_bin);
+  installROMCartridge(1, "Supermon V1.2", supermon64_bin);
+  installROMCartridge(2, "EhBasic", basic_bin);
+  installROMCartridge(3, "C demo", demo_bin);
 
   initSound();
 
@@ -66,11 +92,23 @@ void NEO6502::init()
 /// <param name="startAddress"></param>
 /// <param name="romSize"></param>
 /// <returns></returns>
-bool NEO6502::addROM(const char* romName, const uint8_t* ROM)
+bool NEO6502::addROM(const uint8_t vId)
 {
-  return loadROM(romName, ROM);
+  return loadROMCartridge(vId);
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="vId"></param>
+void NEO6502::setMemConfig(const uint8_t vId)
+{
+  Serial.printf("Memory config: %s\n", gMemConfig[vId].ConfigName);
+
+  for (uint8_t c = 0; (c < MAX_ROM_CARTRIDGES) && (gMemConfig[vId].Config[c] >= 0); c++) {
+    addROM(gMemConfig[vId].Config[c]);
+  }
+}
 
 /// <summary>
 /// set the UCASE
@@ -117,7 +155,7 @@ void NEO6502::serialEvent1()
 
     case 0x12: // ^R
       Serial.read();
-      Serial.println("RESET");
+      Serial.println(F("RESET"));
       //      showCursor(true);
       resetDisplay();
       reset6502();
@@ -125,7 +163,7 @@ void NEO6502::serialEvent1()
 
     case 0x0C: // ^L
       Serial.read();
-      Serial.println("LOGGING");
+      Serial.println(F("LOGGING"));
       logState = !logState;
       clockCount = 0UL;
       break;
@@ -136,7 +174,7 @@ void NEO6502::serialEvent1()
       for (uint8_t i = 0; i < 18; i++) {
         Serial.printf("%02X ", mem[0XD020 + i]);
       }
-      Serial.println("\nSPRITE:");
+      Serial.println(F("\nSPRITE:"));
       for (uint8_t i = 0; i < 16; i++) {
         for (uint8_t j = 0; j < 16; j++) {
           Serial.printf("%02X ", mem[0XD100 + i * 16 + j]);
@@ -145,7 +183,7 @@ void NEO6502::serialEvent1()
       }
       Serial.println();
 
-      Serial.println("\nTILE:");
+      Serial.println(F("\nTILE:"));
       for (uint8_t i = 0; i < 16; i++) {
         for (uint8_t j = 0; j < 16; j++) {
           Serial.printf("%02X ", mem[0XD200 + i * 16 + j]);
@@ -157,13 +195,13 @@ void NEO6502::serialEvent1()
 
     case 0x13: // ^S
       Serial.read();
-      Serial.println("SOUND");
+      Serial.println(F("SOUND"));
       soundOn = !soundOn;
       break;
 
     case 0x14: // ^T
       Serial.read();
-      Serial.println("TRACE");
+      Serial.println(F("TRACE"));
       traceOn = !traceOn;
       break;
 

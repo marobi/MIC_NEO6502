@@ -346,6 +346,7 @@ void displayWrite(const uint8_t c) {
   }
 
   switch (c) {
+  case 0:
   case '\r':
   case '\n':
     break;
@@ -383,7 +384,7 @@ void scanChar() {
     }
 
     displayWrite(ch);
-    hasDisplayUpdate++;
+//    hasDisplayUpdate++;
 
     mem[DSP] = 0x00;
   }

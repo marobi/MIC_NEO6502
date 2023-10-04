@@ -15,33 +15,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 */
 
-#ifndef _NEO6502_h
-#define _NEO6502_h
+#ifndef _MON_h
+#define _MON_h
 
-#include "Arduino.h"
-
-extern boolean romProtect;
-
-/// <summary>
-/// 
-/// </summary>
-class NEO6502
-{
- private:
-   boolean isUcase = true;
-
-	 void serialEvent1();
-
-protected:
-	 bool addROM(const uint8_t vId);
-
-public:
-	 void init();
-	 void setMemConfig(const uint8_t vId);
-	 void run();
-	 void setUCASE(const boolean vUcase);
-	 void setROMProtect(const boolean vProtect);
-	 void setTextColor(uint8_t vColor);
-};
+#include "C:\cygwin64\home\Rien\neo6502\supermon64\supermon64.mon"
 
 #endif
+

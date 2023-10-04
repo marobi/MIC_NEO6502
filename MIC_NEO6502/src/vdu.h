@@ -44,7 +44,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define VDU_HH    0xD028  // Height high
 #define VDU_FP    0xD029  // Sprite flip
 #define VDU_SID   0xD02A  // Sprite Id
-#define VDU_DMOD  0xD02B  // Draw mode - RECT :: fill-mode, SPRITE:draw mode :: 0 - NOP, 1 - OR, 2 - AND, 3 - XOR
+#define VDU_DMOD  0xD02B  // Draw mode - RECT :: fill-mode, SPRITE:draw mode :: 0 - NOP, 1 - OR, 2 - AND, 3 - XOR (default)
 #define VDU_MOD   0xD02C  // VDU mode
 #define VDU_PAL   0xD02D  // PAL index
 #define VDU_COL   0xD02E  // FG color low
