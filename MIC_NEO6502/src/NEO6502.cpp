@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "roms.h"
 #include "vdu.h"
 #include "sound.h"
+#include "palette.h"
 
 #include "NEO6502.h"
 
@@ -33,15 +34,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "basic.h"
 #include "demo.h"
 
-#define MAX_ROM_CARTRIDGES  8
+#define MAX_SYSCONFIG_ROM_CARTRIDGES  8
 
 /// <summary>
 /// 
 /// </summary>
 typedef struct {
-  char ConfigName[32];
-  int8_t Slot[MAX_ROM_CARTRIDGES];
-} defMemConfig;
+  char   ConfigName[32];
+  bool   Ucase;
+  bool   RomProtect;
+  uint8_t TextColor;
+  int8_t Slot[MAX_SYSCONFIG_ROM_CARTRIDGES];
+} defSysConfig;
 
 //---------------------------------------------------------
 uint32_t       clockCount = 0UL;
@@ -51,10 +55,11 @@ boolean        logState = false;
 boolean        romProtect;
 
 //---------------------------------------------------------
-defMemConfig gMemConfig[] = {
-  { "Basic setup", {0, 1, 2, -1 } },
-  { "Demo setup",  {0, 1, 3, -1 }, },
-  { "", {-1 } }
+defSysConfig gSysConfig[] = {
+//   Config          Ucase  ROMp     ROMs
+  { "EHBasic setup", false, true,  DEFAULT_TEXT_COLOR, { 0, 1, 2, -1 } },
+  { "C-demo setup",  true,  false, 208               , { 0, 1, 3, -1 } },
+  { "",              false, false, DEFAULT_TEXT_COLOR, {-1 } }
 };
 
 /// <summary>
@@ -65,10 +70,11 @@ void NEO6502::init()
   initMemory();
 
   initROMCassette();
-  installROMCartridge(0, "BIOS", bios_bin);
-  installROMCartridge(1, "Supermon V1.2", supermon64_bin);
-  installROMCartridge(2, "EhBasic", basic_bin);
-  installROMCartridge(3, "C demo", demo_bin);
+  // fill the cassette
+  installROMCartridge(0, "BIOS",         bios_bin);
+  installROMCartridge(1, "Supermon64",   supermon64_bin);
+  installROMCartridge(2, "EhBasic",      basic_bin);
+  installROMCartridge(3, "C-demo @1000", demo_bin);
 
   initSound();
 
@@ -101,12 +107,16 @@ bool NEO6502::addROM(const uint8_t vId)
 /// 
 /// </summary>
 /// <param name="vId"></param>
-void NEO6502::setMemConfig(const uint8_t vId)
+void NEO6502::setSysConfig(const uint8_t vId)
 {
-  Serial.printf("Memory config: %s\n", gMemConfig[vId].ConfigName);
+  Serial.printf("System config: %s\n", gSysConfig[vId].ConfigName);
 
-  for (uint8_t c = 0; (c < MAX_ROM_CARTRIDGES) && (gMemConfig[vId].Slot[c] >= 0); c++) {
-    addROM(gMemConfig[vId].Slot[c]);
+  setUCASE(gSysConfig[vId].Ucase);
+  setROMProtect(gSysConfig[vId].RomProtect);
+  setTextColor(gSysConfig[vId].TextColor);
+
+  for (uint8_t c = 0; (c < MAX_SYSCONFIG_ROM_CARTRIDGES) && (gSysConfig[vId].Slot[c] >= 0); c++) {
+    addROM(gSysConfig[vId].Slot[c]);
   }
 }
 

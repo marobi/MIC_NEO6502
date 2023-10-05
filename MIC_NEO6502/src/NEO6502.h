@@ -37,7 +37,7 @@ protected:
 
 public:
 	 void init();
-	 void setMemConfig(const uint8_t vId);
+	 void setSysConfig(const uint8_t vId);
 	 void run();
 	 void setUCASE(const boolean vUcase);
 	 void setROMProtect(const boolean vProtect);
