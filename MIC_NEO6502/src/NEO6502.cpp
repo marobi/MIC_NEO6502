@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 /// </summary>
 typedef struct {
   char ConfigName[32];
-  int8_t Config[MAX_ROM_CARTRIDGES];
+  int8_t Slot[MAX_ROM_CARTRIDGES];
 } defMemConfig;
 
 //---------------------------------------------------------
@@ -105,8 +105,8 @@ void NEO6502::setMemConfig(const uint8_t vId)
 {
   Serial.printf("Memory config: %s\n", gMemConfig[vId].ConfigName);
 
-  for (uint8_t c = 0; (c < MAX_ROM_CARTRIDGES) && (gMemConfig[vId].Config[c] >= 0); c++) {
-    addROM(gMemConfig[vId].Config[c]);
+  for (uint8_t c = 0; (c < MAX_ROM_CARTRIDGES) && (gMemConfig[vId].Slot[c] >= 0); c++) {
+    addROM(gMemConfig[vId].Slot[c]);
   }
 }
 
