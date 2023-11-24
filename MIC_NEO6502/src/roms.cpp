@@ -154,7 +154,7 @@ boolean installROMCartridge(const uint8_t vId, const char* vROMName, const uint8
     strcpy(gROMCassette[vId].CartridgeName, vROMName);
     gROMCassette[vId].ROMCartridge = vROMCartridge;
 
-    Serial.printf("ROM-%02d: %s installed\n", vId, vROMName);
+    Serial.printf("Slot %02d: %s\n", vId, vROMName);
     return true;
   }
   else
