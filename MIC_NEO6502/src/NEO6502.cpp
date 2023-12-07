@@ -69,7 +69,7 @@ void NEO6502::init()
 {
   initMemory();
 
-  initROMCassette();
+  initROMSlots();
   // fill the cassette
   installROMCartridge(0, "BIOS",         bios_bin);
   installROMCartridge(1, "Supermon64",   supermon64_bin);
@@ -166,7 +166,6 @@ void NEO6502::serialEvent1()
     case 0x12: // ^R
       Serial.read();
       Serial.println(F("RESET"));
-      //      showCursor(true);
       resetDisplay();
       reset6502();
       break;

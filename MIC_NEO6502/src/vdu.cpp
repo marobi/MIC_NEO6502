@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // 
 #include <PicoDVI.h>
 
+#include "version.h"
 #include "memory.h"
 #include "vdu.h"
 #include "palette.h"
@@ -499,6 +500,6 @@ void helloDisplay() {
 #endif
 //  display.print("NEO6502");
   setColor(255); // WHITE
-  display.println("\n                memulator v0.09.17\n");
+  display.printf("\n                memulator %s\n\n", cVERSION);
   setColor(currentTextColor);
 }

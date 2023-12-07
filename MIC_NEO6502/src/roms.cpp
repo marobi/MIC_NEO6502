@@ -24,7 +24,7 @@ typedef struct {
   char  CartridgeName[32];
   const uint8_t* ROMCartridge;
   boolean Loaded;
-} defROMCartidge;
+} defROMCartridge;
 
 /// <summary>
 /// ROM cartridge header definition
@@ -51,7 +51,7 @@ typedef struct {            // 16 bytes
 /// <summary>
 /// cassette with 8 cartridges
 /// </summary>
-defROMCartidge  gROMCassette[MAX_ROM_SLOTS];
+defROMCartridge  gROMSlots[MAX_ROM_SLOTS];
 
 
 /// <summary>
@@ -59,13 +59,13 @@ defROMCartidge  gROMCassette[MAX_ROM_SLOTS];
 /// </summary>
 /// <param name="vId"></param>
 /// <returns></returns>
-bool loadROMCartridge(const uint8_t vId) {
+boolean loadROMCartridge(const uint8_t vSlotId) {
   uint16_t startAddress;
   uint16_t romSize;
   uint8_t  romType;
 
-  if (vId < MAX_ROM_SLOTS) {
-    defROM* hdr = (defROM*)gROMCassette[vId].ROMCartridge;
+  if (vSlotId < MAX_ROM_SLOTS) {
+    defROM* hdr = (defROM*)gROMSlots[vSlotId].ROMCartridge;
 
     if ((hdr->SOH != 0x5A) || (hdr->EOH != 0xA5)) {
       Serial.println(F("*ERROR: Invalid ROM header"));
@@ -117,10 +117,10 @@ bool loadROMCartridge(const uint8_t vId) {
 
     startAddress = (uint16_t)hdr->STARTADDRESS_H * 256 + hdr->STARTADDRESS_L;
     romSize = (uint16_t)hdr->SIZE_H * 256 + hdr->SIZE_L;
-    Serial.printf("%16s\t%04X: [%04X]\n", gROMCassette[vId].CartridgeName, startAddress, romSize);
+    Serial.printf("%16s\t%04X: [%04X]\n", gROMSlots[vSlotId].CartridgeName, startAddress, romSize);
     
     // copy ROM in memory space
-    memcpy(&mem[startAddress], gROMCassette[vId].ROMCartridge + sizeof(defROM), romSize);
+    memcpy(&mem[startAddress], gROMSlots[vSlotId].ROMCartridge + sizeof(defROM), romSize);
 
     return true;
   }
@@ -134,10 +134,10 @@ bool loadROMCartridge(const uint8_t vId) {
 /// 
 /// </summary>
 /// <returns></returns>
-boolean initROMCassette()
+boolean initROMSlots()
 {
   for (uint8_t i = 0; i < MAX_ROM_SLOTS; i++)
-    gROMCassette[i].Loaded = false;
+    gROMSlots[i].Loaded = false;
 
   return true;
 }
@@ -148,13 +148,13 @@ boolean initROMCassette()
 /// <param name="id"></param>
 /// <param name="ROMCartridge"></param>
 /// <returns></returns>
-boolean installROMCartridge(const uint8_t vId, const char* vROMName, const uint8_t* vROMCartridge)
+boolean installROMCartridge(const uint8_t vSlotId, const char* vROMName, const uint8_t* vROMCartridge)
 {
-  if (vId < MAX_ROM_SLOTS) {
-    strcpy(gROMCassette[vId].CartridgeName, vROMName);
-    gROMCassette[vId].ROMCartridge = vROMCartridge;
+  if (vSlotId < MAX_ROM_SLOTS) {
+    strcpy(gROMSlots[vSlotId].CartridgeName, vROMName);
+    gROMSlots[vSlotId].ROMCartridge = vROMCartridge;
 
-    Serial.printf("Slot %02d: %s\n", vId, vROMName);
+    Serial.printf("Slot %02d: %s\n", vSlotId, vROMName);
     return true;
   }
   else

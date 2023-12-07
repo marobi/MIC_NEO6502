@@ -32,6 +32,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\sprite.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\tile.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\vdu.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\version.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\memory.cpp" />

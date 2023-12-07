@@ -14,18 +14,11 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 */
+// vdu.h
 
-// roms.h
+#ifndef _VERSION_h
+#define _VERSION_h
 
-#ifndef _ROMS_h
-#define _ROMS_h
-
-#include "Arduino.h"
-
-#define MAX_ROM_SLOTS  32
-
-boolean initROMSlots();
-boolean installROMCartridge(const uint8_t vSlotId, const char *ROMName, const uint8_t* ROMCartridge);
-boolean loadROMCartridge(const uint8_t vSlotId);
+#define cVERSION  "v00.09.134"
 
 #endif
