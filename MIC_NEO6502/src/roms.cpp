@@ -16,6 +16,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "roms.h"
 #include "memory.h"
+#include "vdu.h"
 
 /// <summary>
 /// 
@@ -68,12 +69,12 @@ boolean loadROMCartridge(const uint8_t vSlotId) {
     defROM* hdr = (defROM*)gROMSlots[vSlotId].ROMCartridge;
 
     if ((hdr->SOH != 0x5A) || (hdr->EOH != 0xA5)) {
-      Serial.println(F("*ERROR: Invalid ROM header"));
+      log("*ERROR: Invalid ROM header");
       return false;
     }
 
     if (hdr->VERSION_MAJOR != 0x01) {
-      Serial.println(F("*ERROR: Invalid ROM version"));
+      log("*ERROR: Invalid ROM version");
       return false;
     }
 
@@ -91,7 +92,7 @@ boolean loadROMCartridge(const uint8_t vSlotId) {
     csum += hdr->IRQ_H;
 
     if (csum != hdr->CSUM) {
-      Serial.println(F("*ERROR: Invalid checksum"));
+      log("*ERROR: Invalid checksum");
       return false;
     }
 
@@ -100,24 +101,24 @@ boolean loadROMCartridge(const uint8_t vSlotId) {
       // set NMI
       mem[0xFFFA] = hdr->NMI_L;
       mem[0xFFFB] = hdr->NMI_H;
-      Serial.printf("NMI:\t0x%02x%02x\n", mem[0xFFFB], mem[0xFFFA]);
+      log("NMI:\t0x%02x%02x\n", mem[0xFFFB], mem[0xFFFA]);
     }
     if ((hdr->TYPE & 0x02) != 0) {
       // set RESET
       mem[0xFFFC] = hdr->RESET_L;
       mem[0xFFFD] = hdr->RESET_H;
-      Serial.printf("RESET:\t0x%02x%02x\n", mem[0xFFFD], mem[0xFFFC]);
+      log("RESET:\t0x%02x%02x\n", mem[0xFFFD], mem[0xFFFC]);
     }
     if ((hdr->TYPE & 0x04) != 0) {
       // set IRQ
       mem[0xFFFE] = hdr->IRQ_L;
       mem[0xFFFF] = hdr->IRQ_H;
-      Serial.printf("IRQ:\t0x%02x%02x\n", mem[0xFFFF], mem[0xFFFE]);
+      log("IRQ:\t0x%02x%02x\n", mem[0xFFFF], mem[0xFFFE]);
     }
 
     startAddress = (uint16_t)hdr->STARTADDRESS_H * 256 + hdr->STARTADDRESS_L;
     romSize = (uint16_t)hdr->SIZE_H * 256 + hdr->SIZE_L;
-    Serial.printf("%16s\t%04X: [%04X]\n", gROMSlots[vSlotId].CartridgeName, startAddress, romSize);
+    log("%16s\t%04X: [%04X]\n", gROMSlots[vSlotId].CartridgeName, startAddress, romSize);
     
     // copy ROM in memory space
     memcpy(&mem[startAddress], gROMSlots[vSlotId].ROMCartridge + sizeof(defROM), romSize);
@@ -125,7 +126,7 @@ boolean loadROMCartridge(const uint8_t vSlotId) {
     return true;
   }
   else {
-    Serial.println(F("*ERROR: Invalid ROM"));
+    log("*ERROR: Invalid ROM");
     return false;
   }
 }
@@ -154,7 +155,7 @@ boolean installROMCartridge(const uint8_t vSlotId, const char* vROMName, const u
     strcpy(gROMSlots[vSlotId].CartridgeName, vROMName);
     gROMSlots[vSlotId].ROMCartridge = vROMCartridge;
 
-    Serial.printf("Slot %02d: %s\n", vSlotId, vROMName);
+    log("Slot %2d: %s\n", vSlotId, vROMName);
     return true;
   }
   else

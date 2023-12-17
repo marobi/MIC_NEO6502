@@ -502,4 +502,52 @@ void helloDisplay() {
   setColor(255); // WHITE
   display.printf("\n                memulator %s\n\n", cVERSION);
   setColor(currentTextColor);
+
+  display.swap(true, false);
 }
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="fmt"></param>
+/// <param name="args"></param>
+inline void vPrint(char const* fmt, va_list args) {
+  // calculate required buffer length
+  int msg_buf_size = vsnprintf(nullptr, 0, fmt, args) + 1; // add one for null terminator
+  char msg_buf[msg_buf_size];
+
+  vsnprintf(msg_buf, msg_buf_size, fmt, args);
+
+#if 0
+  Serial.print(msg_buf);
+#else
+  char *c = msg_buf;
+
+  while (*c != 0x00) {
+    displayWrite(*c);
+    switch (*c++) {
+    case '\n':
+      displayWrite('\r');
+      break;
+    }
+  }
+
+  swapDisplay();
+#endif
+}
+
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="fmt"></param>
+/// <param name=""></param>
+void log(const char* fmt, ...)
+{
+  va_list args;
+
+  va_start(args, fmt);
+  vPrint(fmt, args);
+  va_end(args);
+}
+

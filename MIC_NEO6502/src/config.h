@@ -15,34 +15,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 */
 
-#ifndef _NEO6502_h
-#define _NEO6502_h
+#ifndef _CONFIG_h
+#define _CONFIG_h
 
-#include "Arduino.h"
-
-extern boolean romProtect;
-
-/// <summary>
-/// 
-/// </summary>
-class NEO6502
-{
- private:
-   boolean isUcase = true;
-
-	 void serialEvent1();
-
-protected:
-	 bool addROM(const uint8_t vId);
-
-public:
-	 void init();
-	 uint8_t getSysConfig(); // simple helper function
-	 void setSysConfig(const uint8_t vId);
-	 void run();
-	 void setUCASE(const boolean vUcase);
-	 void setROMProtect(const boolean vProtect);
-	 void setTextColor(uint8_t vColor);
-};
+//#define USE_PIO_CONFIG  1
+//#define USE_USB_ONLY 1
 
 #endif

@@ -55,11 +55,15 @@ boolean        logState = false;
 boolean        romProtect;
 
 //---------------------------------------------------------
+
+#define CONFIG_BASIC 0  // boots into EhBasic
+#define CONFIG_CDEMO 1  // boots into Supermon64
+
 defSysConfig gSysConfig[] = {
 //   Config          Ucase  ROMp     ROMs
   { "EHBasic setup", false, true,  DEFAULT_TEXT_COLOR, { 0, 1, 2, -1 } },
   { "C-demo setup",  true,  false, 208               , { 0, 1, 3, -1 } },
-  { "",              false, false, DEFAULT_TEXT_COLOR, {-1 } }
+  { "",              false, false, DEFAULT_TEXT_COLOR, {-1}}
 };
 
 /// <summary>
@@ -67,27 +71,49 @@ defSysConfig gSysConfig[] = {
 /// </summary>
 void NEO6502::init()
 {
+  initDisplay();
+  helloDisplay();
+
   initMemory();
 
   initROMSlots();
   // fill the cassette
-  installROMCartridge(0, "BIOS",         bios_bin);
-  installROMCartridge(1, "Supermon64",   supermon64_bin);
-  installROMCartridge(2, "EhBasic",      basic_bin);
-  installROMCartridge(3, "C-demo @1000", demo_bin);
+  installROMCartridge(0, "BIOS v1.0",         bios_bin);
+  installROMCartridge(1, "Supermon64 v1.2",   supermon64_bin);
+  installROMCartridge(2, "EhBasic p2.22p5a",  basic_bin);
+  installROMCartridge(3, "C-demo @1000",      demo_bin);
 
   initSound();
 
   init6502();
   reset6502();
 
-  initDisplay();
-
   // 4 stats
   clockCount = 0UL;
   lastClockTS = millis();
+}
 
-  helloDisplay();
+/// <summary>
+/// 
+/// </summary>
+/// <returns></returns>
+uint8_t NEO6502::getSysConfig()
+{
+  uint8_t lCfg;
+  
+  log("\nAvailable configurations : \n");
+  for (uint8_t c = 0; c < MAX_ROM_SLOTS; c++) {
+    if (strcmp(gSysConfig[c].ConfigName, "") != 0) {
+      log(" %d    %s\n", c, gSysConfig[c].ConfigName);
+    }
+    else
+      break;
+  }
+  log("\nSelect a config: ");
+  while (!Serial.available());
+  lCfg = Serial.read();
+  log("%c\n", lCfg);
+  return lCfg - 0x30;
 }
 
 /// <summary>
@@ -109,7 +135,7 @@ bool NEO6502::addROM(const uint8_t vId)
 /// <param name="vId"></param>
 void NEO6502::setSysConfig(const uint8_t vId)
 {
-  Serial.printf("System config: %s\n", gSysConfig[vId].ConfigName);
+  log("System config: %s\n\n", gSysConfig[vId].ConfigName);
 
   setUCASE(gSysConfig[vId].Ucase);
   setROMProtect(gSysConfig[vId].RomProtect);
