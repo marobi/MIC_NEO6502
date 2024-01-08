@@ -15,10 +15,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 */
 
+#include "config.h"
+
 #include "pico/stdio.h"
 
 #include "pico/stdlib.h"
 #include "pico/time.h"
+
+#ifdef USE_PIO_CONFIG
+#include "sm0_memory_emulation_with_clock.h"
+#endif
 
 #include "mos65C02.h"
 #include "memory.h"
@@ -66,6 +72,17 @@ defSysConfig gSysConfig[] = {
   { "",              false, false, DEFAULT_TEXT_COLOR, {-1}}
 };
 
+#ifdef USE_PIO_CONFIG
+void initPio() {
+  uint offset = 0;
+
+  offset = pio_add_program(pio1, &memory_emulation_with_clock_program);
+  memory_emulation_with_clock_program_init(pio1, 0, offset);
+  pio_sm_set_enabled(pio1, 0, true);
+}
+
+#endif
+
 /// <summary>
 /// 
 /// </summary>
@@ -86,6 +103,10 @@ void NEO6502::init()
   initSound();
 
   init6502();
+#ifdef USE_PIO_CONFIG
+  initPio();
+#endif
+
   reset6502();
 
   // 4 stats
@@ -260,6 +281,37 @@ void NEO6502::serialEvent1()
   return;
 }
 
+#ifdef USE_PIO_CONFIG
+/// <summary>
+/// 
+/// </summary>
+inline __attribute__((always_inline))
+void tick6502() {
+  union u32
+  {
+    uint32_t value;
+    struct {
+      uint16_t address;
+      uint8_t flags;
+    } data;
+  } value;
+
+  value.value = pio_sm_get_blocking(pio1, 0);
+
+  if (value.data.flags & 0x8) { // 65C02 Read
+
+    pio_sm_put(pio1, 0, mem[value.data.address]);
+
+  }
+  else { // 65C02 Write
+
+    uint8_t data = pio_sm_get_blocking(pio1, 0);
+
+    mem[value.data.address] = data;
+  }
+}
+#endif
+
 /// <summary>
 /// 
 /// </summary>
@@ -304,5 +356,7 @@ void NEO6502::run() {
         i = 20000UL;
       }
     }
+
+    handleReset();
   }
 }

@@ -23,12 +23,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define _MOS65C02_h
 
 #include "Arduino.h"
+#include "config.h"
 
 #define USE_DIRECT_READ
 
 void init6502();
 void reset6502();
+void handleReset();
+#ifndef USE_PIO_CONFIG
 void tick6502();
+#endif
 
 #endif
 

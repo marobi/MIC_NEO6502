@@ -118,7 +118,7 @@ boolean loadROMCartridge(const uint8_t vSlotId) {
 
     startAddress = (uint16_t)hdr->STARTADDRESS_H * 256 + hdr->STARTADDRESS_L;
     romSize = (uint16_t)hdr->SIZE_H * 256 + hdr->SIZE_L;
-    log("%16s\t%04X: [%04X]\n", gROMSlots[vSlotId].CartridgeName, startAddress, romSize);
+    log("%24s\t%04X: [%04X]\n", gROMSlots[vSlotId].CartridgeName, startAddress, romSize);
     
     // copy ROM in memory space
     memcpy(&mem[startAddress], gROMSlots[vSlotId].ROMCartridge + sizeof(defROM), romSize);

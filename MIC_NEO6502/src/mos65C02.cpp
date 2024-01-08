@@ -17,6 +17,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // 
 // Author: Rien Matthijsse
 // 
+#include "config.h"
 #include "NEO6502.h"
 #include "mos65C02.h"
 #include "pins.h"
@@ -93,6 +94,7 @@ void  setDir(const uint8_t direction) {
   }
 }
 
+#ifndef USE_PIO_CONFIG
 /// <summary>
 /// read the R/W pin
 /// </summary>
@@ -101,7 +103,9 @@ inline __attribute__((always_inline))
 bool  getRW() {
   return gpio_get(uP_RW);
 }
+#endif
 
+#ifndef USE_PIO_CONFIG
 /// <summary>
 /// read the address bus
 /// </summary>
@@ -123,7 +127,9 @@ uint16_t  getAddress() {
 
   return addr;
 }
+#endif
 
+#ifndef USE_PIO_CONFIG
 /// <summary>
 /// read the databus
 /// </summary>
@@ -139,7 +145,9 @@ uint8_t  getData() {
 
   return data;
 }
+#endif
 
+#ifndef USE_PIO_CONFIG
 /// <summary>
 /// write the databus
 /// </summary>
@@ -151,6 +159,7 @@ void  putData(const uint8_t data) {
   setEnable(en_D0_7);
   gpio_put_masked(BUS_MASK, (uint32_t)data);
 }
+#endif
 
 /// <summary>
 /// initialise the 65C02
@@ -172,20 +181,25 @@ void init6502() {
   gpio_set_dir_out_masked(en_MASK); // enable as output
   setEnable(en_NONE); // all high
 
-  // trial: does not work
-#ifdef NEO6502
-  gpio_set_pulls(8, false, false);
-  gpio_set_pulls(9, false, false);
-  gpio_set_pulls(10, false, false);
-  gpio_set_slew_rate(8, GPIO_SLEW_RATE_FAST);
-  gpio_set_slew_rate(9, GPIO_SLEW_RATE_FAST);
-  gpio_set_slew_rate(10, GPIO_SLEW_RATE_FAST);
-#endif 
-
   // ADDRESS
   // DATA
   gpio_init_mask(BUS_MASK);
   setDir(INPUT);
+}
+
+/// <summary>
+/// 
+/// </summary>
+void handleReset() {
+  // reset mgmt
+  if (inReset) {
+    if (resetCount-- == 0) {
+      // end of reset
+      setReset(RESET_HIGH);
+      inReset = false;
+      //        Serial.printf("RESET release\n");
+    }
+  }
 }
 
 /// <summary>
@@ -198,6 +212,7 @@ void reset6502() {
   inReset = true;
 }
 
+#ifndef USE_PIO_CONFIG
 /// <summary>
 /// clock cycle 65C02
 /// </summary>
@@ -242,13 +257,6 @@ void  tick6502()
     break;
   }
 
-  // reset mgmt
-  if (inReset) {
-    if (resetCount-- == 0) {
-      // end of reset
-      setReset(RESET_HIGH);
-      inReset = false;
-      //        Serial.printf("RESET release\n");
-    }
-  }
+  handleReset();
 }
+#endif

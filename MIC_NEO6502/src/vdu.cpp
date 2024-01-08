@@ -507,7 +507,7 @@ void helloDisplay() {
 }
 
 /// <summary>
-/// 
+/// output to screen ala printf
 /// </summary>
 /// <param name="fmt"></param>
 /// <param name="args"></param>

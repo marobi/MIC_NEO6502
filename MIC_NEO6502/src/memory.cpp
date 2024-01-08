@@ -17,13 +17,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // 
 // Author: Rien Matthijsse
 // 
+#include "config.h"
 #include "memory.h"
 #include "roms.h"
 
 /// <summary>
 /// 64k RAM
 /// </summary>
-uint8_t mem[MEMORY_SIZE];
+#ifdef USE_PIO_CONFIG
+uint8_t mem[MEMORY_SIZE]; // __attribute__((aligned(MEMORY_SIZE)));
+#else
+uint8_t mem[MEMORY_SIZE] __attribute__((aligned(sizeof(uint32_t))));
+#endif
 
 // address and data registers
 uint16_t address;

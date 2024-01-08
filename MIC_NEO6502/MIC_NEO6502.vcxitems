@@ -28,6 +28,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\palette.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\pins.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\roms.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\sm0_memory_emulation_with_clock.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\sound.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\sprite.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\tile.h" />
