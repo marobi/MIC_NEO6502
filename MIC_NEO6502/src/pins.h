@@ -19,11 +19,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // 
 // Author: Rien Matthijsse
 // 
-#define NEO6502
+
+#include "config.h"
 
 // 65c02 connections
 //
-#ifdef NEO6502
+#ifdef USE_NEO6502
 // NEO6502 board v1.0
 #define uP_RESET  28 // RESB(40) <-- UEXT pin 3
 #define uP_CLOCK  21 // PHI2
@@ -43,6 +44,7 @@ HDMI: pico_neo6502_cfg
 #define uP_CLOCK  27 // PHI2
 #define uP_RW     26 // RW#
 
+#define uP_BUZZ   20
 /*
 BUS:
 0 - 7

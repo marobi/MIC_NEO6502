@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #ifndef _CONFIG_h
 #define _CONFIG_h
 
+#define USE_NEO6502 1
 #define USE_PIO_CONFIG  1
 //#define USE_USB_ONLY 1
 

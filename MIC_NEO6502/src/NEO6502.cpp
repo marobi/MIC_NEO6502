@@ -299,14 +299,10 @@ void tick6502() {
   value.value = pio_sm_get_blocking(pio1, 0);
 
   if (value.data.flags & 0x8) { // 65C02 Read
-
     pio_sm_put(pio1, 0, mem[value.data.address]);
-
   }
   else { // 65C02 Write
-
     uint8_t data = pio_sm_get_blocking(pio1, 0);
-
     mem[value.data.address] = data;
   }
 }

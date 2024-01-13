@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // 
 #include <PicoDVI.h>
 
+#include "config.h"
 #include "version.h"
 #include "memory.h"
 #include "vdu.h"
@@ -36,6 +37,7 @@ uint32_t       hasDisplayUpdate = 0;
 
 boolean        traceOn = false;
 
+#ifdef USE_NEO6502
 // Pico HDMI for Olimex Neo6502 
 static const struct dvi_serialiser_cfg pico_neo6502_cfg = {
   .pio = DVI_DEFAULT_PIO_INST,
@@ -44,9 +46,14 @@ static const struct dvi_serialiser_cfg pico_neo6502_cfg = {
   .pins_clk = 12,
   .invert_diffpairs = true
 };
+#endif
 
 // Here's how an 320x240 256 colors graphics display is declared.
+#ifndef USE_NEO6502
+DVIGFX8 display(DVI_RES_320x240p60, true, pico_sock_cfg);
+#else
 DVIGFX8 display(DVI_RES_320x240p60, true, pico_neo6502_cfg);
+#endif
 
 
 /// <summary>

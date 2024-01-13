@@ -94,6 +94,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\sm0_memory_emulation_with_clock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)LICENSE" />
